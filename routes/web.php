@@ -23,18 +23,23 @@ Route::get('/', function () {
 });
 
 Route::get('/login', function () {
+    if(Auth::user()){
+        return redirect('auth-info');
+    }
+
     return view('login');
 });
 
 Route::get('/logout', function () {
     Auth::logout();
+
+    return redirect('login');
 });
 
 Route::get('/auth-info', function () {
-    $data = ['success' => false, 'message' => 'no logged in user'];
-    if(Auth::user()){
-        $data = [ 'success' => true, 'data' => Auth::user() ];
-    }
+    $data = Auth::user() ?
+        ['success' => false, 'message' => 'no logged in user'] :
+        ['success' => true, 'data' => Auth::user() ];
 
     return response()->json($data);
 });
@@ -49,11 +54,9 @@ Route::get('/auth/callback', function () {
     $email = $user->getEmail();
     $localUser = User::where('email', $email)->first();
 
-    if(!$localUser){
-        $localUser = User::create([
-            'email' => $email, 'password' => Hash::make(Str::random()),
-        ]);
-    }
+    $localUser = $localUser ? : User::create([
+        'email' => $email, 'password' => Hash::make(Str::random()),
+    ]);
 
     Auth::login($localUser);
 

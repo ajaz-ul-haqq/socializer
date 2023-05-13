@@ -38,8 +38,8 @@ return [
     ],
 
     'google' => [
-        'client_id' => '',
-        'client_secret' => '',
-        'redirect' => '',
+        'client_id' => '746445492596-dj7v1i6lvi68mogvcg5dj1hqqtespqb2.apps.googleusercontent.com',
+        'client_secret' => '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',
+        'redirect' => 'https://developers.productdemourl.com/socializer/public/auth/callback/google',
     ]
 ];
